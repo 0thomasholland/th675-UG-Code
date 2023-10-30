@@ -1,0 +1,30 @@
+---
+title: "Human Evolution"
+author: "Thomas Holland (th675)"
+output:
+  pdf_document:
+    toc: false
+    number_sections: false
+    citation_package: natbib
+documentclass: article
+classoption: [12pt, oneside, a4paper]
+bibliography: "citations.bib"
+---
+
+# Hypothesis 1 - _Sahelanthropus tchadensis_ is a hominin.
+
+_Sahelanthropus tchadensis_ is an extinct species that is dated to within the Miocene. There are several features of the cranium of the _Sahelanthropus_ that, when compared to both the chimp lineage as well as the hominin lineage have similarities to both. 
+
+For example, there is a possible reminant sagital crest, a highly defined brow ridge, teeth structures, and the cranial capacity that are similar to that of the extant chimpanzee, however a large foramen magnum positioned to suggest possible bipedal locomotion (although this has been debated as this feature is also present in non-hominin primates), parabolic shaped teeth rows, and smaller canines that are similar to that of the hominin lineage. 
+
+However, the only skull that has been discovered has undergone a large amount of distortion and damage, with the result that the right side of the skull is heavily depressed and the cranium has been flatterned, reducing our ability to make accurate comparisons.
+
+In conclusion, based purely on the morphological data seen, it is very hard to determine whether _Sahelanthropus tchadensis_ is a hominin or not. After further reading, it seems likely that this species occured around the divergence of the hominin/chimp lineage, which would explain why it has features of both. However, it is also possible that this species is a an early representative of the Gorilla lineage based on genetic data. However, it sheds light on the evolutionary history of primates and suggests that the last common ancestor of humans and chimpanzees is unlikely to closely resemble extant chimpanzees, as previously thought, and is possible to be more of a hybrid between the two [@brahic_our_2012].
+
+# Hypothesis 2 - \textit{Australopithecus} was biped.
+
+# Hypothesis 3 - \textit{Paranthropus} ate hard food.
+
+# Hypothesis 4 - The \textit{Homo erectus} sample contains more than one species (and the second species is \textit{Homo ergaster}).
+
+# References

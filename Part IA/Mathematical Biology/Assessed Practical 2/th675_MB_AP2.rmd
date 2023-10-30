@@ -1,0 +1,288 @@
+---
+title: "MB Assessed Practical 2"
+author: "Thomas Holland (th675)"
+output: 
+    rmdformats::html_clean:
+        toc: true
+        toc_depth: 3
+        toc_float: true
+        number_sections: false
+        code_folding: show
+        self_contained: true
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# disable warnings
+options(warn=-1)
+
+# IMPORTANT: PACKAGE DESOLVE MUST BE INSTALLED ON YOUR COMPUTER BEFORE RUNNING ANY CODE
+# install.packages("deSolve")
+
+# Load the deSolve package
+library(deSolve)
+
+# for kable output
+library(knitr)
+
+library(ggplot2)
+
+# install.packages("rmdformats") # for custom html output, using the html_clean format
+```
+
+# Question 1
+
+*Why do we only need to analyse two differential equations even though the model has
+three variables (S, I and R)?*
+
+We only need to analyse two differential equations because the third variable, R, is a function of the other two variables. In this case, R is a function of S and I, and can be calculated as R = 1 - S - I. This means that we can calculate R from S and I, and therefore only need to analyse two differential equations.
+
+
+
+# Question 2
+
+*Write a function R0(beta,gamma,N) which takes three arguments (β, γ and the population size
+N ) and returns the basic reproductive number R0 = βN/γ. Then write code to generate a plot of R0
+against the recovery rate γ ranging from 0.2 to 4, with fixed values β = 0.02 and N = 100. Using the
+abline function, add a horizontal line to show the threshold R0 = 1 on the same plot.*
+
+```{r}
+# dynamics of the simple epidemic model (SIR)
+# S' = -beta*S*I
+# I' = beta*S*I - gamma*I
+
+# function to calculate R0
+R0 <- function(beta, gamma, N) {
+    return(beta*N/gamma)
+}
+```
+
+```{r}
+# plot R0 against gamma
+gamma <- seq(0.2, 4, length.out = 10000)
+R0 <- R0(0.02, gamma, 100)
+plot(gamma, R0, type = "l", xlab = "gamma", ylab = "R0")
+abline(h = 1, col = "red")
+# labels for the lines
+legend("topleft", legend = c("R0 = 1", "R0"), col = c("red", "black"), lty = 1, cex = 0.8)
+```
+
+# Question 3
+
+*Write a function SIR_dydt(t,y,parms) which takes three arguments (time t, current values of
+the variables, and values of the model parameters) and returns a list whose only element is a vector
+with the values of the derivatives dS/dt and dI/dt (see Practical 15). Before trying to solve the model,
+follow these steps test that your SIR_dydt function works correctly. According to the model definition,
+dS/dt should always be negative, whereas dI/dt will only be positive if βS > γ and I > 0.*
+
+```{r}
+# function to calculate the derivatives of S and I
+SIR_dydt <- function(t, y, parms) {
+    with(as.list(c(y, parms)), {
+        dS <- -beta*S*I
+        dI <- beta*S*I - gamma*I
+        return(list(c(dS, dI)))
+    })
+}
+```
+
+```{r}
+# test the function
+# dS/dt should be negative, and dI/dt should be positive
+SIR_dydt(0, c(S = 0.9, I = 0.1), c(beta = 0.02, gamma = 1))
+```
+
+```{r}
+# test the function with I = 0
+# dS/dt should be negative, and dI/dt should be 0
+SIR_dydt(0, c(S = 0.9, I = 0), c(beta = 0.02, gamma = 1))
+```
+
+```{r}
+# test the function with beta*S > gamma
+# dS/dt should be negative, and dI/dt should be positive
+SIR_dydt(0, c(S = 0.9, I = 0.1), c(beta = 1, gamma = 0.02))
+
+```
+
+
+## Part (a)
+
+*Setting β = 0.02, γ = 1, I = 1, write a for loop that prints the value of dI/dt for S ranging from
+10 to 80 in steps of 10.*
+
+```{r}
+# for loop to print dI/dt for S ranging from 10 to 80 in steps of 10
+# format list to print as kable, where columns are S, dI/dt and each row is a different value of S
+
+# create a data frame to store the results
+results <- data.frame(S = numeric(), dI_dt = numeric())
+
+for (S in seq(10, 80, by = 10)) {
+    # calculate dI/dt
+    dI_dt <- SIR_dydt(0, c(S = S, I = 1), c(beta = 0.02, gamma = 1))[[1]][2]
+    # add the result to the list
+    results <- rbind(results, data.frame(S = S, dI_dt = dI_dt))
+}
+
+# print the results as a kable
+kable(results)
+```
+
+## Part (b)
+
+*Based on the last output, what is the critical density of susceptible individuals required for an
+epidemic?*
+
+The critical density of susceptible individuals required for an epidemic is above 50%. This is because when S is below 50%, dI/dt is negative, and therefore the number of infected individuals decreases. When S is above 50%, dI/dt is positive, and therefore the number of infected individuals increases.
+
+# Question 4    
+
+*Using the function ode() from the deSolve package, compute the solution of the SIR model
+with N = 100, β = 0.02, γ = 1, initial conditions S(0) = 99.9, I(0) = 0.1, and a vector of time points
+ranging from 0 to 20. Plot the solution in the (S,I) phase plane.*
+
+```{r}
+# solve the SIR model
+# initial conditions
+S0 <- 99.9
+I0 <- 0.1
+# parameters
+N <- 100
+beta <- 0.02
+gamma <- 1
+# time points
+t <- seq(0, 20, length.out = 10000)
+
+# solve the model
+out <- ode(y = c(S = S0, I = I0), times = t, func = SIR_dydt, parms = c(beta = beta, gamma = gamma))
+
+# plot the solution in the (S,I) phase plane with title
+plot(out[, "S"], out[, "I"], type = "l", xlab = "S", ylab = "I", main = "SIR model for N = 100, beta = 0.02, gamma = 1")
+```
+
+# Question 5
+*Create a vector containing the number of recovered individuals R(t) at the same time points as
+in the previous question. Plot all three variables (S, I and R) against time, using different colours.*
+
+```{r}
+# calculate the number of recovered individuals and add to the out data frame
+out <- cbind(out, R = N - out[, "S"] - out[, "I"])
+out <- as(data.frame(out), "data.frame")
+kable(head(out))
+```
+
+```{r}
+# plot S, I and R against time
+ggplot(data = out, aes(x = time)) +
+    geom_line(aes(y = S), colour = "#4682B4", label = "Susceptible") +
+    geom_line(aes(y = I), colour = "#DC143C", label = "Infected") +
+    geom_line(aes(y = R), colour = "#006400", label = "Recovered") +
+    labs(x = "time", y = "Percentage of individuals", title = "SIR model for N = 100, beta = 0.02, gamma = 1") +
+    theme(legend.position = "bottom") +
+    annotate("text", x = 18, y = 58, label = "Susceptible", colour = "#4682B4") +
+    annotate("text", x = 18, y = 55, label = "Infected", colour = "#DC143C") +
+    annotate("text", x = 18, y = 52, label = "Recovered", colour = "#006400")
+```
+
+# Question 6
+*This question aims to estimate the final epidemic size f , defined as the proportion of the
+population that gets infected. Recall from lecture 5 (Epidemic models) that f is the non-zero solution
+of the following equation:*
+
+$$1-f-e^{-\mathcal{R}_0 \cdot f}=0$$
+
+## Part (a)
+
+*Write a function fes_eq(f,r0) which calculates the left-hand-side of the equation for any values
+of $f$ and $\mathcal{R}_0$.*
+
+```{r}
+# function to calculate the left-hand-side of the equation for any values of f and R0
+fes_eq <- function(f, r0) {
+    1 - f - exp(-r0 * f)
+}
+```
+
+```{r}
+# test the function
+fes_eq(0.1, 2)
+```
+
+## Part (b)
+
+*Setting $\mathcal{R}_0=2$, plot the left-hand side of the equation against $f$ , for $f$ ranging from 0 to 1.*
+
+```{r}
+# plot the left-hand side of the equation against f, for f ranging from 0 to 1
+f <- seq(0, 1, length.out = 10000)
+plot(f, fes_eq(f, 2), type = "l", xlab = "f", ylab = expression(paste("1 - f - exp(-", R[0], " * f)")), main = expression(paste("Left-hand side of the equation for ", R[0], " = 2")))
+```
+
+## Part (c)
+
+*Setting R0 = 2, write a while() loop that goes through values of f from 1 downwards in steps of
+0.001, stopping when fes_eq(f,r0) >= 0. What is the final epidemic size for R0 = 2?*
+
+```{r}
+# while loop to go through values of f from 1 downwards in steps of 0.001, stopping when fes_eq(f,r0) >= 0
+# print the final epidemic size for R0 = 2
+
+# set R0
+R0 <- 2
+# set f to 1
+f <- 1
+# while loop
+
+while (fes_eq(f, R0) < 0) {
+    f <- f - 0.001
+}
+
+# print the final epidemic size for R0 = 2
+print(f)
+```
+
+## Part (d)
+
+Using your code from questions (a) and (c), write a function fes_sol(r0) which returns the value
+of the final epidemic size f for any given value of $\mathcal{R}_0$.
+
+```{r}
+# function to return the value of the final epidemic size f for any given value of R0
+fes_sol <- function(r0) {
+    # set f to 1
+    f <- 1
+    # while loop
+    while (fes_eq(f, r0) < 0) {
+        # this will fail when R0 = 1 as fes_eq(f, r0) will always be negative
+        f <- f - 0.001
+    }
+    # return the final epidemic size
+    return(f)
+}
+```
+
+```{r}
+# test the function
+fes_sol(2)
+```
+
+## Part (e)
+*Plot the final epidemic size as a function of R0, for R0 ranging from 1.1 to 6. You should obtain a
+graph similar to Figure 5.5 in the Lecture notes. (Note that function fes_sol will fail for R0 = 1).*
+
+```{r}
+# plot the final epidemic size as a function of R0, for R0 ranging from 1.1 to 6
+# set R0
+R0 <- seq(1.1, 6, length.out = 10000)
+# calculate the final epidemic size
+for (i in 1:length(R0)) {
+    f[i] <- fes_sol(R0[i])
+}
+# combine to dataframe
+df <- data.frame(R0, f)
+# plot
+ggplot(data = df, aes(x = R0, y = f)) +
+    geom_line() +
+    labs(x = expression(R[0]), y = "Final epidemic size", title = "Final epidemic size as a function of R0")
+```

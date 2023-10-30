@@ -1,0 +1,11 @@
+myCol <- ifelse(cholesterol$state=="Iowa","blue","red")
+myPCH <- ifelse(cholesterol$state=="Iowa", 1, 4)
+plot(cholesterol$age,cholesterol$cholesterol,xlab="Age",ylab="Cholesterol (mg/ml)",col=myCol,pch=myPCH)
+
+z <- data.frame(age=seq(10,80,by=1),state="Iowa")
+lines(z$age, predict(model.a,newdata=z), col="blue")
+
+z <- data.frame(age=seq(10,80,by=1),state="Nebraska")
+lines(z$age, predict(model.a,newdata=z), col="red")
+
+legend("topleft",legend=c("Iowa","Nebraska"),pch=c(1,4), lwd=c(1,1), col=c("blue","red"))

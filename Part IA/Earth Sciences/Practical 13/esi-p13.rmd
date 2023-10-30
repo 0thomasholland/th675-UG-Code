@@ -1,0 +1,71 @@
+---
+title: "Practical 13: Faint young sun paradox"
+author: "Thomas Holland"
+date: 7th November 2022
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+# Solar radiation through time
+
+```{r}
+sun_power_fraction_age <- function(time_ago, current_age){
+    # time in billion years
+    # age in billion years
+    # returns solar radiation as fraction of current
+    return(1/(1+0.4*(time_ago/current_age)))
+}
+
+solar_luminosity <- function(time_ago, current_age, current_solar_constant){
+    # time in billion years
+    # age in billion years
+    # solar constant in watts per square metre
+    # returns solar radiation in watts per square metre
+    return(sun_power_fraction_age(time_ago, current_age)*current_solar_constant)
+}
+
+planetary_temperature <- function(time_ago, current_age, current_solar_constant, albedo, emissivity) {
+    return((((1-albedo)/4)*solar_luminosity(time_ago, current_age, current_solar_constant)/emissivity/5.67e-8)^(1/4))
+}
+
+planetary_temperature_c <- function(time_ago, current_age, current_solar_constant, albedo, emissivity) {
+    return(planetary_temperature(time_ago, current_age, current_solar_constant, albedo, emissivity)-273.15)
+}
+
+```
+
+## Plot solar radiation through time
+
+```{r}
+# Plot the solar radiation through time starting at present (time_ago=0) and going back to 4.5 billion years ago (time_ago=4.5), where the current age is 4.5 billion years (current_age=4.5).
+
+ggplot(data.frame(time_ago=seq(0, 4.5, 0.1)), aes(x=time_ago)) +
+    geom_line(aes(y=sun_power_fraction_age(time_ago, 4.5))) +
+    labs(x="Time ago (billion years)", y="Solar radiation as fraction of current")
+
+# plot planetary_temperature
+
+ggplot(data.frame(time_ago=seq(0, 4.5, 0.1)), aes(x=time_ago)) +
+    geom_line(aes(y=planetary_temperature_c(time_ago, 4.5, 1365, 0.3, 0.62))) +
+    labs(x="Time ago (billion years)", y="Planetary temperature (C)")
+```
+
+## Varied albedo with constant other variables
+
+```{r}
+# emissivity at 0.62
+# plot the temperature as a continuos heatmap of albedo and solar constant
+
+data <- expand.grid(albedo=seq(0, 1, 0.1), solar_constant=seq(0, 2000, 100))
+data$temperature <- planetary_temperature_c(0, 4.5, data$solar_constant, data$albedo, 0.62)
+# draw line for temperature of 15C
+ggplot(data, aes(x=albedo, y=solar_constant)) +
+    geom_tile(aes(fill=temperature)) +
+    geom_hline(yintercept=1365, linetype="dashed") +
+    geom_vline(xintercept=0.3, linetype="dashed") +
+    labs(x="Albedo", y="Solar constant (W/m^2)", fill="Temperature (C)")
+```

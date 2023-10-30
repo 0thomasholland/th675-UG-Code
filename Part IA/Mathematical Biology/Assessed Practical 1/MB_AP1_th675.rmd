@@ -1,0 +1,200 @@
+---
+title: "R Markdown"
+author: "Thomas Holland (th675)"
+date: "December 22, 2022"
+output: 
+    rmdformats::html_clean:
+        toc: true
+        toc_depth: 3
+        toc_float: true
+        number_sections: true
+        code_folding: show
+        self_contained: true
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+# disable warnings
+options(warn=-1)
+
+# libraries used can be installed using the following commands
+# install.packages("tidyverse")
+# install.packages("rmarkdown")
+# install.packages("rmdformats") # for custom html output, using the html_clean format
+
+# load libraries
+library(tidyverse)
+library(knitr)
+```
+
+Click the images to view larger versions.
+
+# Inital data import
+
+## Import data
+
+```{r}
+# load data from data.csv using read_csv from the tidyverse package
+data <- read_csv("data.csv")
+
+kable(head(data))
+```
+
+## Data cleaning
+
+```{r}
+# print number of rows with missing values
+sum(is.na(data))
+```
+
+## Log transformation of size data
+
+```{r}
+# add new column to data with natural log transformed length
+
+data <- data %>% 
+    mutate(log_length = log(length))
+
+kable(head(data))
+
+```
+
+# Basic examination of data
+
+## Box plot of data
+
+```{r}
+# box plot of length, grouped by sex from the dataset data, using the ggplot2 package. 
+
+ggplot(data, aes(length, sex)) + 
+    geom_boxplot() + 
+    geom_jitter(width = 0, height = 0.2, alpha = 0.2) +  # added jitter so overlapping points are visible
+    theme_bw() +
+    labs(title="Box plot of lengths grouped by the sex of the organism", x="Length (mm)" , y="Sex")
+```
+
+```{r}
+# box plot of lengths, grouped by sex from the dataset data, using the ggplot2 package. Add x scale every 10 mm
+
+ggplot(data, aes(length, sex)) + 
+    geom_boxplot() + 
+    geom_jitter(width = 0, height = 0.2, alpha = 0.2) +  # added jitter so overlapping points are visible
+    theme_bw() +
+    coord_trans(x = "log") + # transform the x axis to natural  log scale
+    scale_x_continuous(breaks = seq(0, 100, 10)) + # add more values to the x axis
+    labs(title="Box plot of log adjusted lengths grouped by the sex of the organism", x="Length (mm), log scale" , y="Sex")
+```
+
+# Statistical tests
+
+This section contains the results of the statistical tests carried out on the data. The analysis of these results and comments are in the analysis section.
+
+## Binomial test
+
+Carry out and report the results of a binomial test to evaluate whether the sex ratio of the sample deviates from 1:1.
+
+```{r}
+binomial <- binom.test(table(data$sex), p = 0.5, alternative = "two.sided", conf.level = 0.95)
+
+binomial
+```
+
+## T-test
+
+Carry out and report the results of a t-test to evaluate whether females and males differ in size.
+
+```{r}
+lm.t_test <- lm(data$length ~ data$sex)
+lm.t_test
+summary(lm.t_test)
+
+t.test(data$length ~ data$sex, alternative = "two.sided", conf.level = 0.95, var.equal = TRUE)
+```
+
+### Diagnostic plots for t-test
+
+Use histogram for diagnostic plots for the t-test.
+
+```{r}
+ggplot(data = data, aes(x = length)) + 
+    geom_histogram(aes(y = ..density..), bins = 30, fill = "grey") + 
+    geom_density(alpha = 0.2, fill = "grey") + 
+    facet_wrap(~sex, ncol = 1) + 
+    theme_bw() +
+    labs(title="Histogram of lengths grouped by sex", x="Length (mm)" , y="Density")
+```
+
+Also use the built-in diagnostic plots for the t-test.
+
+```{r fig.dim = c(10, 15)}
+par(mfrow = c(3,2))
+hist(resid(lm.t_test), main = "Residuals", xlab = "Residuals", ylab = "Frequency") 
+plot(lm.t_test)
+```
+
+## Mann-Whitney U test
+
+Non-parametric alternative to the t-test.
+
+```{r}
+mannwhitney <- wilcox.test(data$length ~ data$sex, alternative = "two.sided", conf.level = 0.95)
+
+mannwhitney
+```
+
+The diagnostic plots for the t-test can also be used for the Mann-Whitney U test.
+
+## T-test on log transformed data
+
+```{r}
+lm.log_t_test <- lm(log(data$length) ~ data$sex)
+lm.log_t_test
+
+summary(lm.log_t_test)
+
+t.test(log(data$length) ~ data$sex, alternative = "two.sided", conf.level = 0.95, var.equal = TRUE)
+
+t.test(log(data$length) ~ data$sex, alternative = "two.sided", conf.level = 0.95, var.equal = FALSE)
+```
+
+### Diagnostic plots for t-test on log transformed data
+
+```{r}
+ggplot(data = data, aes(x = length)) + 
+    geom_histogram(aes(y = ..density..), bins = 30, fill = "grey") + 
+    geom_density(alpha = 0.2, fill = "grey") + 
+    facet_wrap(~sex, ncol = 1) + 
+    theme_bw() +
+    coord_trans(x = "log") + # transform the x axis to natural  log scale
+    scale_x_continuous(breaks = seq(0, 100, 10)) + # add more values to the x axis
+    labs(title="Histogram of lengths grouped by sex", x="Length (mm), log scale" , y="Density")
+```
+
+
+Utilising the built-in diagnostic plots for the t-test.
+
+```{r fig.dim = c(10, 15)}
+par(mfrow = c(3,2))
+hist(resid(lm.log_t_test), main = "Residuals", xlab = "Residuals", ylab = "Frequency")
+plot(lm.log_t_test)
+```
+
+# Analysis
+
+## Binomial test
+
+The binomial test confirmed that there was no significant deviation from the sex ratio displayed in the data because the p-value of `r binomial$p.value` is greater than the significance level of 0.05.
+
+## T-test
+
+The effect of sex on the length of the organism was tested, and it was found that males were `r round(lm.t_test$coefficients[2], 2)` mm longer than the females and that the females were found to be `r round(lm.t_test$coefficients[1], 2)` mm long on average (F= `r summary(lm.t_test)$fstatistic[1]`, p-value of `r summary(lm.t_test)$fstatistic[4]`).
+
+However, the diagnostic plots for the linear model generated from this is not ideal. Firstly, the histogram plot shows an unequal variance, as the male group has a much larger variance. Also, the histogram plot shows that there is a non-normal distribution with the male having a possible positive skew.
+
+This is also seen with the residuals vs fitted diagnostic plot that has a much smaller spread around the female group (the lower fitted value). Also in the normal Q-Q plot, the datapoints stray quite far from the 1:1 expectation line, especially at either end suggesting that a transformation may be necessary.
+
+This is confirmed as the Mann-Whitney U test had a non-significant result (p-value of `r mannwhitney$p.value`), confirming that even without parametric assumptions the data is not significantly different, and so a transformation may be necessary.
+
+However, based on the linear model generated using the log-transformations, there is no significant predictive value of sex in the length of the fish (p-value of `r t.test(log(data$length) ~ data$sex, alternative = "two.sided", conf.level = 0.95, var.equal = TRUE)$p.value`, equal variance), and even when testing without the assumption of equal variance the predictive value is still not significant (p-value of `r t.test(log(data$length) ~ data$sex, alternative = "two.sided", conf.level = 0.95, var.equal = FALSE)$p.value`).
+
+*Please note that there is "hidden" code within this that is used to access the p-values by using the following code as an example: `` `r "\u0060r mannwhitney$p.value\u0060"` ``*

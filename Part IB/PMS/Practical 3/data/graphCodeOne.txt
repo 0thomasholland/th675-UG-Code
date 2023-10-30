@@ -1,0 +1,6 @@
+# plot the ferns data, with meaningful axes labels and title
+plot(ferns$Size,ferns$Number,xlab="Size",ylab="Number",main="Fitted model",col="black") 
+# add the line corresponding to the fitted linear model to the plot (and plot it in red)
+abline(fern.lm,col="red")
+# add a nice legend
+legend("topleft",legend=c("Data","Model"),pch=c(1,NA),lty=c(NA,1),col=c("black","red"))

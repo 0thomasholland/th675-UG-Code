@@ -1,0 +1,182 @@
+---
+title: "MB Assessed Practical 3"
+author: "Thomas Holland (th675)"
+output: 
+    rmdformats::html_clean:
+        toc: true
+        toc_depth: 3
+        toc_float: true
+        number_sections: false
+        code_folding: show
+        self_contained: true
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# disable warnings
+options(warn=-1)
+
+# for kable output
+library(knitr)
+#for string splitting
+library(stringr)
+
+# install.packages("rmdformats") # for custom html output, using the html_clean format
+# install.packages("stringr") # for string splitting
+```
+
+# Introduction
+
+Task: **Develop a dynamic programming algorithm for performing a semi-global alignment of two sequences.**
+
+Details: *You should closely follow the program introduced in Practical 16 to create a program (R function) that reads in two nucleotide sequences (e.g. CGGATG and CAGTG) as well as “match”, “mismatch” and “gap” scores.The program should then build a dynamic programming matrix, fill it out according to the sequences and scoring scheme, perform the trace back to find the optimal semi-global alignment, and write out this optimal alignment. Write the program so that it does NOT show terminal-gap regions, e.g. if aligning ACGGTAACGAAGCCCG with TAAGAGGC your alignment might look like:*
+```
+TAACGAAGC
+TAA-GAGGC
+```
+*but not*
+```
+ACGGTAACGAAGCCCG
+----TAA-GAGGC---
+```
+
+# Tests
+
+```{r}
+seq1 <- c("CTTCACACTCAAAGGCGGTGCACCAACAAAGGTTACTTTTGGTGATGACACTGTGATAGA", "CTTCACACTCAAAGGCGGTGCACCAACAAAGGTTACTTTTGGTGATGACACTGTGATAGA", "CTTCACACTCAAAGGCGGTGCACCAACAAAGGTTACTTTTGGTGATGACACTGTGATAGA", "CTTCACACTCAAAGGCGGTGCACCAACAAAGGTTACTTTTGGTGATGACACTGTGATAGA")
+seq2 <- c("CCTACTTTGTTCAGACTCAAAGGTGGTGCGCCTCCCAAAGGAGTTAAGTTTGGTGGCGAA", "AGGTGCCCCTACAAAGGGAGTCACATTTGGTGAAGACACAGTTGTGGAAATCCAGGGTTA", "AGGTGCCCCTACAAAGGGAGTCACATTTGGTGAAGACACAGTTGTGGAAATCCAGGGTTA", "AGGTGCCCCTACAAAGGGAGTCACATTTGGTGAAGACACAGTTGTGGAAATCCAGGGTTA")
+params <- list(c(1,-1,-2), c(1,-1,-2), c(1,-1,-1), c(1,-2,-1))
+
+#function called test that takes an input function and runs it on the test data
+test <- function(f) {
+    for (i in 1:length(seq1)) {
+        print(paste("Test", i))
+        f(seq1[i], seq2[i], params[[i]][1], params[[i]][2], params[[i]][3])
+    }
+}
+```
+
+# Semi-Global Alignment
+
+## Algorithm
+
+```{r}
+semi_global <- function(str1, str2, score_match, score_mismatch, score_gap) {
+  seq1 <- str_split(str1, "")[[1]]
+  seq2 <- str_split(str2, "")[[1]]
+
+  matrix_row <- length(seq1) + 1
+  matrix_col <- length(seq2) + 1
+
+
+  # set the score for match, mismatch and gap
+  score_match <- score_match
+  score_mismatch <- score_mismatch
+  score_gap <- score_gap
+  gap_char <- "-"
+
+  F_matrix <- matrix(0, nrow = matrix_row, ncol = matrix_col)
+
+  for (i in 2:matrix_row) {
+    for (j in 2:matrix_col) {
+      if (seq1[i - 1] == seq2[j - 1]) {
+        score_d <- score_match
+      } else {
+        score_d <- score_mismatch
+      }
+      F_matrix[i, j] <- max(F_matrix[i - 1, j - 1] + score_d, F_matrix[i - 1, j] + score_gap, F_matrix[i, j - 1] + score_gap)
+  }
+  }
+
+  # print(F_matrix)
+
+
+
+  alignment_seq1 <- ""
+  alignment_seq2 <- ""
+
+  i <- matrix_row
+  j <- matrix_col
+
+  while (i >= 2 && j >= 2) {
+    if (F_matrix[i, j] == F_matrix[i - 1, j - 1] + score_match && seq1[i - 1] == seq2[j - 1]) {
+      alignment_seq1 <- paste(seq1[i - 1], alignment_seq1, sep = "")
+      alignment_seq2 <- paste(seq2[j - 1], alignment_seq2, sep = "")
+      i <- i - 1
+      j <- j - 1
+    } else if (F_matrix[i, j] == F_matrix[i - 1, j - 1] + score_mismatch && seq1[i - 1] != seq2[j - 1]) {
+      alignment_seq1 <- paste(seq1[i - 1], alignment_seq1, sep = "")
+      alignment_seq2 <- paste(seq2[j - 1], alignment_seq2, sep = "")
+      i <- i - 1
+      j <- j - 1
+    } else if (F_matrix[i, j] == F_matrix[i - 1, j] + score_gap) {
+      alignment_seq1 <- paste(seq1[i - 1], alignment_seq1, sep = "")
+      alignment_seq2 <- paste(gap_char, alignment_seq2, sep = "")
+      i <- i - 1
+    } else if (F_matrix[i, j] == F_matrix[i, j - 1] + score_gap) {
+      alignment_seq1 <- paste(gap_char, alignment_seq1, sep = "")
+      alignment_seq2 <- paste(seq2[j - 1], alignment_seq2, sep = "")
+      j <- j - 1
+    } else {
+      break
+    }
+  }
+  print(alignment_seq1)
+  print(alignment_seq2)
+}
+```
+
+## Tests
+
+```{r}
+test(semi_global)
+```
+
+## Question 2
+
+Use your program to perform semi-global alignments of the following sequence pairs:
+
+i) `AGTGTT` and `CAATG` (scoring scheme: match +1, mismatch -1, gap -2) [this is the example in
+the lectures]
+
+ii) `GGTAATG` and `CTAGTGTT` (scoring scheme: match +1, mismatch -1, gap -2)
+
+iii) `GGGGGGCTCCAAGCCCAGAACACCAAGGGGCCCAAAAA` and
+`CTCCGACCCAGCACCACGTGGC` (scoring scheme: match +1, mismatch -1, gap -2)
+
+iv) `ATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCTC` and
+`GTCCCCGGGTTTAATGAGAGGACTCATGTCCTCCTCAGTTTGCCTGTT` (scoring scheme:
+match +1, mismatch -1, gap -2)
+
+v) `ATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCTC` and `GTCCCCGGGTTTAATGAGAGGACTCATGTCCTCCTCAGTTTGCCTGTT` (scoring scheme:
+match +1, mismatch -1, gap -1)
+
+### Part (i)
+
+```{r}
+semi_global("AGTGTT", "CAATG", 1, -1, -2)
+```
+
+### Part (ii)
+
+```{r}
+semi_global("GGTAATG", "CTAGTGTT", 1, -1, -2)
+```
+
+### Part (iii)
+
+```{r}
+semi_global("GGGGGGCTCCAAGCCCAGAACACCAAGGGGCCCAAAAA", "CTCCGACCCAGCACCACGTGGC", 1, -1, -2)
+```
+
+### Part (iv)
+
+```{r}
+semi_global("ATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCTC", "GTCCCCGGGTTTAATGAGAGGACTCATGTCCTCCTCAGTTTGCCTGTT", 1, -1, -2)
+```
+
+### Part (v)
+
+```{r}
+semi_global("ATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCTC", "GTCCCCGGGTTTAATGAGAGGACTCATGTCCTCCTCAGTTTGCCTGTT", 1, -1, -1)
+```

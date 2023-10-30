@@ -1,0 +1,59 @@
+---
+title: eDNA Practical
+author: Thomas Holland (th675)
+date: 6th March 2023
+documentclass: article
+classoption: a4paper
+output:
+    # md_document:
+    #   toc: true
+    #   toc_depth: 3
+    #   number_sections: true
+    pdf_document:
+        toc: false
+        number_sections: false
+# bibliography: [citations.bib]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rmarkdown)
+options(scipen=999)
+```
+
+# Question 1
+
+- Disruption of cellular structure: Steps 1-4
+- Separation of the dissolved DNA from the cell debris and other materials: Steps 5-7
+- Binding the DNA for purification: Steps 8-10
+- Washing the DNA to remove proteins and contaminants from the matrix: Steps 12-14
+- Elution of the DNA: Steps 16-18
+
+# Question 2
+
+We had 240 mg of soil sample produce 15.5 ng/$\mu$L of DNA.
+
+240 mg = 240,000 µg
+
+We can then calculate the total amount of DNA in the subsample of soil by multiplying the concentration by the volume of the subsample of soil:
+
+15.5 ng/µL x (240,000 µg / 1,000,000 µg/mL) = 3,720 ng
+
+Finally, we can calculate the rough number of base pairs of DNA in the subsample of soil by dividing the total amount of DNA by the weight of a single base pair of DNA:
+
+3,720 ng / (650 g/mol x 1,000,000 ng/g) = 5.72 x 10^6 base pairs
+
+# Question 3
+
+Looking at the graph, I would suggest that the relic DNA would be in the low range, lower than 100. This seems to where there is smaller peaks that do not fit with the larger distribution on the right of the 100 mark. Also, logically it makes sense for (a) there to be less relic DNA than eDNA and (b) that the relic DNA, due to the longer period of time it has been exposed to destructive forces, would be shorter.
+
+Therefore, as the corrected peak area for between 15 and 118 is `r 7680+9696` and from 118 to 1417 is `r 925974+70914+14266`, the proportion of this sample that is relic DNA is approximately `r round(17376/(17376+1011154),4)`%.
+
+# Question 4
+
+- Contamination: given the environnement that we were working in, it is probable that there was some contamination of the sample and so there would be some DNA entering the sample, either from us or from the lab work surfaces.
+- Sample storage: eDNA can degrade rapidly in soil samples during storage due to environmental conditions such as temperature, humidity, and exposure to light. This can affect the quantity and quality of eDNA extracted and introduce variability in the results.
+- Soil heterogeneity: The composition and properties of soil can vary considerably within a given area, which can introduce variability in the amount and quality of eDNA extracted from different soil samples. This can be minimized by collecting multiple samples from the same location and homogenizing them prior to extraction. Also, we only used a very small part of our sample, and so doing multiple replicates for one sample would have been beneficial, and although it would have increased costs, it would would lead to statistically more powerful results.
+- Human error: the timing within the experiment may not have been followed, and so this might have led to errors in the results by have incomplete or overreacted processes.
+
+If we had pooled the data as a group, this would have provided us with the ability to map the eDNA levels to locations of collections, and this would have been useful to compare results to aid in spotting anomalies. However this might have led to sampling bias could occur if certain soil types, geographic regions, or environmental conditions are overrepresented or unrepresented in the sample, leading to biased estimates.

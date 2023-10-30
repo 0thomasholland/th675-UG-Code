@@ -1,0 +1,182 @@
+---
+title: "Practical 12: Planetary Energy Balance"
+author: "Thomas Holland"
+date: 4th November 2022
+output: pdf_document
+---
+```{r setup, include=FALSE}
+# Turn off the r output
+knitr::opts_chunk$set(echo = FALSE)
+
+# use mhchem for chemical equations
+library(knitr)
+
+# use tufte for formatting
+library(tufte)
+```
+
+```{r echo=TRUE}
+sboltz <- 5.67e-8 # Stefan-Boltzmann constant
+wein <- 2.898e-6
+
+dart.temperature = 4500 # K
+
+athos.distance <- 100
+athos.solar_flux_density <- 2500
+athos.albedo <- 0.2
+athos.emissivity <- 0.2
+
+porthos.distance <- 150
+porthos.albedo <- 0.3
+porthos.emissivity <- 0.5
+
+aramis.distance <- 200
+aramis.albedo <- 0.4
+aramis.emissivity <- 0.9
+```
+
+## Solar output
+```{r}
+dart.solar_output <- athos.solar_flux_density * athos.distance^2
+```
+
+Solar output  $=`r dart.solar_output`$ W
+
+## Planetary solar flux
+
+```{r}
+porthos.solar_flux <- dart.solar_output / porthos.distance^2
+
+aramis.solar_flux <- dart.solar_output / aramis.distance^2
+```
+
+Porthos solar flux (4 sig fig) $=`r round(porthos.solar_flux, 0)`$ W m$^{-2}$
+
+Aramis solar flux $=`r aramis.solar_flux`$ W m$^{-2}$
+
+## Black body temperature (Kelvin)
+
+```{r}
+athos.temperature.bb <- (athos.solar_flux_density * (1-athos.albedo)/4 / sboltz)^(1/4)
+
+porthos.temperature.bb <- (porthos.solar_flux * (1-porthos.albedo)/4 / sboltz)^(1/4)
+
+aramis.temperature.bb <- (aramis.solar_flux * (1-aramis.albedo)/4 / sboltz)^(1/4)
+```
+
+Athos temperature $=`r athos.temperature.bb`$ K
+
+Porthos temperature $=`r porthos.temperature.bb`$ K
+
+Aramis temperature $=`r aramis.temperature.bb`$ K
+
+## Black body temperature (Celsius)
+
+```{r}
+athos.temperature.bb_c <- athos.temperature.bb - 273.15
+
+porthos.temperature.bb_c <- porthos.temperature.bb - 273.15
+
+aramis.temperature.bb_c <- aramis.temperature.bb - 273.15
+```
+
+Athos temperature $=`r athos.temperature.bb_c`$ $^{\circ}$C
+
+Porthos temperature $=`r porthos.temperature.bb_c`$ $^{\circ}$C
+
+Aramis temperature $=`r aramis.temperature.bb_c`$ $^{\circ}$C
+
+## Predicted planetary temperature (Kelvin)
+
+```{r}
+athos.temperature.obs <- athos.temperature.bb * (athos.emissivity)^(1/4)
+
+porthos.temperature.obs <- porthos.temperature.bb * (porthos.emissivity)^(1/4)
+
+aramis.temperature.obs <- aramis.temperature.bb * (aramis.emissivity)^(1/4)
+```
+
+Athos observed temperature $=`r athos.temperature.obs`$ K
+
+Porthos observed temperature $=`r porthos.temperature.obs`$ K
+
+Aramis observed temperature $=`r aramis.temperature.obs`$ K
+
+## Predicted planetary temperature (Celsius)
+
+```{r}
+athos.temperature.obs_c <- athos.temperature.obs - 273.15
+
+porthos.temperature.obs_c <- porthos.temperature.obs - 273.15
+
+aramis.temperature.obs_c <- aramis.temperature.obs - 273.15
+```
+
+Athos observed temperature $=`r athos.temperature.obs_c`$ $^{\circ}$C
+
+Porthos observed temperature $=`r porthos.temperature.obs_c`$ $^{\circ}$C
+
+Aramis observed temperature $=`r aramis.temperature.obs_c`$ $^{\circ}$C
+
+## Maximum emission wavelength
+
+```{r}
+athos.lambda.max <- wein / athos.temperature.bb
+
+porthos.lambda.max <- wein / porthos.temperature.bb
+
+aramis.lambda.max <- wein / aramis.temperature.bb
+```
+
+Athos maximum emission wavelength $=`r athos.lambda.max`$ m
+
+Porthos maximum emission wavelength $=`r porthos.lambda.max`$ m
+
+Aramis maximum emission wavelength $=`r aramis.lambda.max`$ m
+
+## Solar maximum emission wavelength
+
+```{r} 
+
+dart.lambda.max <- wein / dart.temperature
+```
+
+D'art solar maximum emission wavelength $=`r dart.lambda.max`$ m
+
+## Green house effect (Kelvin)
+
+```{r}
+athos.temperature.gh <- athos.temperature.bb - athos.temperature.obs
+
+porthos.temperature.gh <- porthos.temperature.bb - porthos.temperature.obs
+
+aramis.temperature.gh <- aramis.temperature.bb - aramis.temperature.obs
+```
+
+Athos greenhouse effect $=`r athos.temperature.gh`$ K
+
+Porthos greenhouse effect $=`r porthos.temperature.gh`$ K
+
+Aramis greenhouse effect $=`r aramis.temperature.gh`$ K
+
+## Inference from the greenhouse effect
+
+The higher greenhouse effect for Athos suggests that the atmosphere is denser than the other planets.
+
+## Plot of blackbody temperature and mean temperatures (y) against distance (x)
+
+```{r}
+x <- c(athos.distance, porthos.distance, aramis.distance)
+y <- c(athos.temperature.bb, porthos.temperature.bb, aramis.temperature.bb)
+y2 <- c(athos.temperature.obs, porthos.temperature.obs, aramis.temperature.obs)
+plot(x, y, type="b", col="red", xlab="Distance (m)", ylab="Temperature (K)", main="Blackbody temperature")
+#plot points for x and y2
+points(x, y2, col="blue")
+lines(x, y2, col="blue")
+legend("topright", legend=c("Blackbody", "Observed"), col=c("red", "blue"), lty=1:1)
+# range of y axis 190 to 350
+axis(2, at=seq(190, 350, by=10))
+```
+
+
+

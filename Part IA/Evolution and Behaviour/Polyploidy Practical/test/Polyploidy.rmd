@@ -1,0 +1,111 @@
+---
+title: "Polyploidy in Plants"
+author: "Thomas Holland (th675)"
+date: "January 11th, 2023"
+output: pdf_document
+toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(readxl)
+library(ggplot2)
+library(tidyr)
+```
+
+```{r}
+# load morphological data morphology.csv
+
+morph <- read.csv("morphology.csv", header = TRUE, sep = ",")
+
+#add column for the species with the first 20 rows of the data frame being Ss, the next 20 being Sc and the last 20 being Sv
+
+morph$species <- c(rep("Ss", 20), rep("Sc", 20), rep("Sv", 20))
+
+# remove first column
+
+morph <- morph[,-1]
+```
+
+# Morphological Data
+
+## Analysis of Dataset
+
+For each of the morphological data types I created a boxplot of the data for each species. I then performed a Kruskal-Wallis test to determine if there was significant variation between species for each of the morphological data types with the p-value for the test printed and whether or not there was significant variation between species.
+
+```{r} 
+list_of_signifiant_morph <- c()
+
+for (i in 1:(ncol(morph)-1)) {
+    print(ggplot(morph, aes(x = species, y = morph[,i])) + geom_boxplot()  + labs(title = gsub("\\.", " ",colnames(morph)[i]), x = "Species", y = gsub("\\.", " ", colnames(morph)[i]))) 
+    # print in scientific notation (e.g. 1.234e-5) the KW test
+    print(paste("The p-value for the test of whether the within-species variation exceed the between-species variation for the measurement of", gsub("\\.", " ", colnames(morph)[i]), "is", format(kruskal.test(morph[,i] ~ morph$species)$p.value, scientific = TRUE)))
+    # if the p-value is less than 0.05, print that there is signficant measured variation between species, otherwise print that there is not
+    if (kruskal.test(morph[,i] ~ morph$species)$p.value < 0.05) {
+        print("There is significant measured variation between species")
+        list_of_signifiant_morph <- c(list_of_signifiant_morph, gsub("\\.", " ", colnames(morph)[i]))
+    } else {
+        print("There is not significant measured variation between species")
+    }
+}
+
+```
+
+## Suggested questions
+
+**Which traits show a great amount of within-species variation?**
+
+The following traits show a great amount of within-species variation (KW test of $p<0.05$): 
+
+```{r results='asis'}
+
+cat(paste("- ", list_of_signifiant_morph), sep = "\n\n")
+```
+
+However, it appears that examples like seed length would only be useful diagnositc for one of the species (namely for this example Sc), this is because the data for the other species (Ss and Sv) are not different enough from each other as there is a large overlap between them.
+
+Another point of consideration is that some of the measurements are counts of features, and so it is possible upon recording and samping a population for there to be missing features, for example if a ray florret is note pressent due to the plant being damaged.
+
+The following appear to have clear differences (less than IQR overlap) between all three species:
+
+- Width of the ray floret
+- Length of the ray floret
+- Number of ray florets
+- Capitulum width
+- Capitulum length
+
+The following have clear differences between one of the species and the other two:
+
+- Leaf dissection (Sv > Ss, Sc)
+- Seed length (Sc > Ss, Sv)
+- Pollen pore size (Sc > Ss, Sv)
+
+**Do these traits have anything in common?**
+
+The traits that have the clearest differences between the three species are the ones that are related to the flower and petal. It also apears that the ones where there is a clear difference between one species and the other two are the ones that the one that is different has a larger value than the other two species.
+
+
+**Why do these traits show so much within-species variation, even with presumably similar genotypes?**
+
+The high level of within-species variation are likely due to environmental factors such as the amount of light, water, and nutrients that the plant is exposed to. This means that although the plants are genetically similar, they are not exposed to the same environmental conditions and so the plants will have different phenotypes.
+
+**Try to predict which characters are likely to be genetically determined, and which might be influenced by environmental conditions, and think about which type would be most useful to use in this context.**
+
+The characters that are likely to be genetically determined are the ones that have the clearest differences between the species. This is because the differences between the species are likely due to the genetic differences between the species and not the environemntal conditions that they experience (assuming that the variablitly and type of environment is similar amoung species). The characters that are likely to be influenced by environmental conditions are the ones that have a large amount of overlap between the species. This is because the differences between the species are likely due to the environmental differences between the species.
+
+**Are there any traits that show evidence of (a) intermediacy or (b) additive variation?**
+
+- Total number of seeds apears to be somewhat additive, with Sv having the most seeds, at roughly 50% more than Ss and Sc.
+- Seed length apears to be additive with the average ($\pm 1 \sigma$) of Sc being `r mean(as.numeric(morph$Seed.length..mm.[morph$species == "Sc"]))` $\pm$ `r sd(as.numeric(morph$Seed.length..mm.[morph$species == "Sc"]))` mm and sum of the averages ($\pm 1 \sigma$) of Ss and Sv being `r mean(as.numeric(morph$Seed.length..mm.[morph$species == "Ss"])) + mean(as.numeric(morph$Seed.length..mm.[morph$species == "Sv"]))` $\pm$ `r sqrt(var(as.numeric(morph$Seed.length..mm.[morph$species == "Ss"])) + var(as.numeric(morph$Seed.length..mm.[morph$species == "Sv"])))` mm being in a similar ball park. (I am unsure of the statitical test to use here)
+- Standardized leaf perimeter seems to be somewhat additive, as Sv is roughly 50% larger than Ss and Sc.
+- Leaf dissection appears to be additive with the average ($\pm 1 \sigma$) of Sv being `r mean(as.numeric(morph$Leaf.dissection[morph$species == "Sv"]))` $\pm$ `r sd(as.numeric(morph$Leaf.dissection[morph$species == "Sv"]))` and sum of the averages ($\pm 1 \sigma$) of Ss and Sc being `r mean(as.numeric(morph$Leaf.dissection[morph$species == "Ss"])) + mean(as.numeric(morph$Leaf.dissection[morph$species == "Sc"]))` $\pm$ `r sqrt(var(as.numeric(morph$Leaf.dissection[morph$species == "Ss"])) + var(as.numeric(morph$Leaf.dissection[morph$species == "Sc"])))` being in a similar numeric range.
+- The number of midleaf lobes looks to be intermediacy, as the average of Sv (`r mean(as.numeric(morph$Number.of.midleaf.lobes[morph$species == "Sv"]))`) is roughly halfway between the averages of Ss (`r mean(as.numeric(morph$Number.of.midleaf.lobes[morph$species == "Ss"]))`) and Sc (`r mean(as.numeric(morph$Number.of.midleaf.lobes[morph$species == "Sc"]))`), which would be `r mean(as.numeric(morph$Number.of.midleaf.lobes[morph$species == "Ss"])) + (mean(as.numeric(morph$Number.of.midleaf.lobes[morph$species == "Sv"])) - mean(as.numeric(morph$Number.of.midleaf.lobes[morph$species == "Ss"]))) / 2` $\pm$ `r sqrt(var(as.numeric(morph$Number.of.midleaf.lobes[morph$species == "Ss"])) + var(as.numeric(morph$Number.of.midleaf.lobes[morph$species == "Sv"])))`.
+- The capitulum length looks to be additive with the average ($\pm 1 \sigma$) of Sv being `r mean(as.numeric(morph$Capitulum.Length..mm[morph$species == "Sv"]))` $\pm$ `r sd(as.numeric(morph$Capitulum.Length..mm[morph$species == "Sv"]))` and sum of the averages ($\pm 1 \sigma$) of Ss and Sc being `r mean(as.numeric(morph$Capitulum.Length..mm[morph$species == "Ss"])) + mean(as.numeric(morph$Capitulum.Length..mm[morph$species == "Sc"]))` $\pm$ `r sqrt(var(as.numeric(morph$Capitulum.Length..mm[morph$species == "Ss"])) + var(as.numeric(morph$Capitulum.Length..mm[morph$species == "Sc"])))` being in a similar numeric range.
+
+It is also common for the traits to be higher in numerical value for the Sv species, but not quite the sum, suggesting that there may be another limiting factor such as the environment in play limiting the potential of the genotype.
+
+**Based off the morphological dataset – which species are the diploid parents and which species is the allopolyploid?**
+
+It appears that the diploid parents are Sc and Ss and that the allopolyploid is Sv. This is based off the fact that Sv has the most traits that are different from the other two species, and that the traits that are different are the ones that Sv has a higher value for than the other two species (execpt for Pollen pore size and seed length).
+

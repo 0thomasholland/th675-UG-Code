@@ -1,0 +1,75 @@
+Terrane,Terrane,lat,Lon,Location 1,Location 2,Lithostrat 1,Lithostrat 2,"m,I,v",Age,2_ error,Technique,Reference
+Unst-Fetlar,Laurentia Hebridean,60.725364,-1.0119675,"Yell, Shetland",SH12-04,Cullivoe Gneiss,metagabbro,i,2699,48,U-Pb zircon,Jahn et al. 2017
+Unst-Fetlar,Laurentia Hebridean,60.725364,-1.0119675,"Yell, Shetland",SH12-04,Cullivoe Gneiss,metagabbro,m,944,52,U-Pb zircon,Jahn et al. 2017
+Unst-Fetlar,Laurentia Hebridean,60.725364,-1.0119675,"Yell, Shetland",SH12-16,Cullivoe Gneiss,orthogneiss,m,931,29,U-Pb zircon,Jahn et al. 2017
+Hebridean,Laurentia Hebridean,58.38913,-5.0244832,Sutherland,Loch na Fincail GST7,Lewisian Complex,grey gneiss,m,1729,36,U-Pb titanite,Kinny & Friend 1997
+Hebridean,Laurentia Hebridean,58.334923,-5.1480078,Sutherland,Upper Badcall GST15,Lewisian Complex,pyroxenite,m,2470,30,U-Pb zircon,Kinny & Friend 1997
+Hebridean,Laurentia Hebridean,58.398534,-5.1194435,Sutherland,Fanagmore GST21,Lewisian Complex,Granodioritic gneiss,i,2764,12,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,58.387255,-5.0277452,Sutherland,Laxford Brae GST24,Lewisian Complex,Granite sheet,i,1854,13,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,57.998495,-7.0965344,North Harris,Sound of Scarp OH9818,Lewisian Complex,Migmatitic gneiss,i,3125,14,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,57.998495,-7.0965344,North Harris,Sound of Scarp OH9818,Lewisian Complex,Migmatitic gneiss,m,1672,8,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,57.998495,-7.0965344,North Harris,Sound of Scarp OH9817,Lewisian Complex,Granite sheet,i,1683,9,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,57.958003,-6.7488907,North Harris,Loch Seaforth OH951,Lewisian Complex,Tonalitic gneiss,i,2834,14,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,57.834858,-7.0261188,South Harris,Bagh Stienigie OH9811,Lewisian Complex,Metasediment,m,1880,10,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,58.680513,-7.0732915,South Harris,Loch Meurach OH952,Lewisian Complex,Granite sheet,i,1674,3,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,57.810838,-7.0868258,South Harris,Northton OH9812,Lewisian Complex,Metasediment,m,1887,7,U-Pb zircon,Friend & Kinny 2001
+Hebridean,Laurentia Hebridean,57.319185,-7.3345528,Uist,,Lewisian Complex,grey gneiss,m,2690,140,Rb-Sr,Moorbath et al. 1975
+Hebridean,Laurentia Hebridean,57.319185,-7.3345528,Uist,,Lewisian Complex,grey gneiss,m,2640,120,Pb-Pb,Moorbath et al. 1975
+Hebridean,Laurentia Hebridean,57.855159,-5.4750802,Highland,Gruinard Bay,Lewisian Complex,trondhjemite,m,2728,2,U-Pb zircon,Corfu et al. 1998
+Hebridean,Laurentia Hebridean,57.855159,-5.4750802,Highland,Gruinard Bay,Lewisian Complex,granite,m,2732,4,U-Pb zircon,Corfu et al. 1998
+Hebridean,Laurentia Hebridean,57.855159,-5.4750802,Highland,Gruinard Bay,Lewisian Complex,pegmatite,i,2792,2,U-Pb zircon,Corfu et al. 1998
+Northern Highlands,Laurentia,58.237752,-3.5379143,Highland,Berriedale Water,Berriedale Granite,augen granite,i,599,9,U-Pb zircon,Kinny et al. 2003
+Northern Highlands,Laurentia,58.25581,-3.6034557,Highland,Berriedale Water,Braeval Granite,augen granite,i,588,8,U-Pb zircon,Kinny et al. 2003
+Northern Highlands,Laurentia,57.812121,-4.5565533,Highland,Cairn Chuinneag,Cairn Chuinneag Granite,augen granite,i,594,11,U-Pb zircon,Oliver et al. 2008
+Northern Highlands,Laurentia,56.864617,-5.4155832,Highland,Glenfinnan,Ardgour Granite,granite gneiss,i,873,7,U-Pb zircon,Friend et al. 1997
+Northern Highlands,Laurentia,57.125863,-4.6926266,Highland,Loch Uanagan,Fort Augustus Granite,granite gneiss,i,870,30,U-Pb zircon,Rogers et al. 2001
+Northern Highlands,Laurentia,57.169924,-4.9473111,Highland,Glendoe,West Highland Gneiss,metagabbro,i,873,6,U-Pb zircon,Millar 1999
+Northern Highlands,Laurentia,56.865767,-5.7809226,Highland,"Sloch, Ardnish",Morar Group,pegmatite,i,827,2,U-Pb monazite,Rogers et al. 1998
+Northern Highlands,Laurentia,56.971058,-5.5635998,Highland,Sgurr Breac,Morar Group,pegmatite,i,784,1,U-Pb monazite,Rogers et al. 1998
+South Islay-Colonsay,Laurentia,55.677584,-6.5096916,Islay,Portnahaven,Rhinns Complex,syenite,m,1782,5,U-Pb zircon,Marcantonio et al. 1988
+South Islay-Colonsay,Laurentia,55.433,-7.238,Co. Donegal,Inishtrahull,Rhinns Complex,syenitic gneiss,m,1779,3,U-Pb zircon,Daly et al. 1991
+Grampian,Laurentia,54.24,-10.09,Co. Mayo,Annagh Head,Annagh Gneiss Complex,Mullet Gneiss,m,1753,3,U-Pb zircon,Daly 1996
+Grampian,Laurentia,54.14,-9.86,Co. Mayo,Tristia,Annagh Gneiss Complex,Cross Point Gneiss,m,1271,6,U-Pb zircon,Daly 1996
+Grampian,Laurentia,54.14,-9.93,Co. Mayo,Doolough,Annagh Gneiss Complex,Doolough Gneiss,m,1177,4,U-Pb zircon,Daly 1996
+Grampian,Laurentia,54.24,-10.09,Co. Mayo,Annagh Head,Annagh Gneiss Complex,leucosome,m,995,6,U-Pb zircon,Daly 1996
+Grampian,Laurentia,54.21,-10.08,Co. Mayo,Cross Point,Annagh Gneiss Complex,pegmatite,i,984,6,U-Pb zircon,Daly 1996
+Grampian,Laurentia,-7.2451889,50.524102,Highland,Slochd Summit,Dava succession,kyanite gneisses,m,840,11,U-Pb zircon,Highton et al. 1999
+Grampian,Laurentia,-7.2251994,50.535083,Highland,Lochindorb,Dava succession,pegmatite,i,808,10,U-Pb monazite,Noble et al. 1996
+Grampian,Laurentia,-7.2251994,50.535083,Highland,Lochindorb,Dava succession,phyllonite,m,804,12,U-Pb monazite,Noble et al. 1996
+Grampian,Laurentia,-7.249735,50.510396,Highland,AÕBhuidheanaich,Dava succession,pegmatite,i,806,3,U-Pb monazite,Noble et al. 1996
+Grampian,Laurentia,-7.540804,49.828893,Argyll & Bute,Port a' Bhuailteir,Tayvallich Volcanic Fmn,felsic tuff,v,601,4,U-Pb zircon,Dempster et al. 2002
+Grampian,Laurentia,-7.5151868,49.846698,Aberdeenshire,Portsoy,Portsoy Granite,gneissic granite,i,600,3,U-Pb zircon,Mendum et al. (in Strachan et al. 2002)
+Grampian,Laurentia,-7.5532914,49.774646,Moray,Keith,Keith Granite,gneissic granite,i,601,4,U-Pb zircon,Mendum et al. (in Strachan et al. 2002)
+Grampian,Laurentia,-7.5237113,49.837614,Perth & Kinross,Ben Vuirich ,Ben Vuirich Granite,gneissic granite,i,590,2,U-Pb zircon,Rogers et al. 1989
+Monian,Laurentia,52.2066,-6.3467,uncertain,,Rosslare Complex,Rosslare paragneiss,m,626,6,Ar-Ar,Max & Roddick 1989
+Monian,Laurentia,52.2301,-6.3328,uncertain,,Rosslare Complex,metagabbro,m,618,6,Ar-Ar,Max & Roddick 1989
+Monian,Laurentia,53.263421,-4.4288368,Gwalchmai Quarry,Anglesey,Coedana Complex,Coedana Granite,i,614,4,U-Pb zircon,Tucker & Pharaoh 1991
+Cymru,Gondwana,53.143657,-4.2695441,Twt Hill,North Wales,,Twt Hill Granite,i,615,1,U-Pb zircon,Schofield et al. 2008
+Cymru,Gondwana,52.861273,-4.6175689,uncertain,North Wales,Sarn Complex,metagabbro,m,615,2,U-Pb zircon,Horak 1993
+Cymru,Gondwana,53.126689,-4.1520608,east of Bryn Bras,North Wales,Arfon Group,Padarn Tuff Formation,v,606,4,U-Pb zircon,Compston et al. 2002
+Cymru,Gondwana,53.127748,-4.1431453,Lake View Hotel,North Wales,Arfon Group,Fachwen Formation,v,574,3,U-Pb zircon,Compston et al. 2002
+Cymru,Gondwana,51.869611,-5.2827893,Porth Clais,Dyfed,,St David's Granophyre,i,587,20,U-Pb zircon,Patchett & Jocelyn 1979
+Cymru,Gondwana,51.761539,-5.0198361,Bolton Hill Quarry,Dyfed,,Johnston Complex,i,643,16,U-Pb zircon,Patchett & Jocelyn 1979
+Cymru,Gondwana,52.696365,-2.5743713,Overley Hill,Shropshire,,Uriconian ,v,566,2,U-Pb zircon,Tucker & Pharaoh 1991
+Cymru,Gondwana,52.213864,-3.0954721,Stanner Rocks,Powys,Stanner-Hanter Complex,felsic intrusion,i,711,1.5,U-Pb zircon,Schofield et al. 2010
+Cymru,Gondwana,52.535301,-2.8006333,Hazler Hill,Shropshire,Longmyndian Supergroup,Stretton Shale Formation,v,567,3,U-Pb zircon,Compston et al. 2002
+Cymru,Gondwana,52.55039,-2.8416126,Lightspout Waterfall,Shropshire,Longmyndian Supergroup,Lightspout Formation,v,556,4,U-Pb zircon,Compston et al. 2002
+Midland Platform,Gondwana,52.683817,-2.5277574,Wrekin Quarry,Shropshire,,Ercall Granophyre,i,560,1,U-Pb zircon,Tucker & Pharaoh 1991
+Midland Platform,Gondwana,52.672743,-2.5885545,Rushton,Shropshire,,Rushton Schist,m,536,8,Rb-Sr,Patchett et al. 1980
+Midland Platform,Gondwana,52.535774,-1.4969323,Nuneaton,,Caldecote Volcanic Formation,intrusive diorite,i,603,2,U-Pb zircon,Tucker & Pharaoh 1991
+Midland Platform,Gondwana,52.120918,-2.3386561,North Malvern,,Malvernian Complex,metagranite,m,677,2,U-Pb zircon,Tucker & Pharaoh 1991
+Midland Platform,Gondwana,52.054284,-2.3434018,Broad Down,,Malvernian Complex,Warren House Formation,m,566,2,U-Pb zircon,Tucker & Pharaoh 1991
+Fenland,Gondwana,52.730286,-1.2248863,Charnwood Golf Course,Leicestershire,Charnian Supergroup,Hanging Rocks Formation,v,557,6,U-Pb zircon,Noble et al. 2015
+Fenland,Gondwana,52.71184,-1.3249809,Bardon Hill Quarry,Leicestershire,Charnian Supergroup,Bradgate Formation,v,562,0.3,U-Pb zircon,Noble et al. 2015
+Fenland,Gondwana,52.694058,-1.2821978,A50 near Markfield,Leicestershire,Charnian Supergroup,Beacon Hill Formation,v,565,0.3,U-Pb zircon,Noble et al. 2015
+Fenland,Gondwana,52.707369,-1.2397971,Benscliffe Wood,Leicestershire,Charnian Supergroup,Benscliffe Breccia,v,569,0.5,U-Pb zircon,Noble et al. 2015
+Fenland,Gondwana,52.404695,-0.83400946,Orton borehole,Northamptonshire,,volcanics,v,612,21,U-Pb zircon,Noble et al 1993
+Fenland,Gondwana,52.633097,-0.30219393,Glinton borehole,Cambridgeshire,,volcanics,v,616,6,U-Pb zircon,Noble et al 1993
+North Armorican,Gondwana N. Amorica,49.5269,-1.8862,,La Hague,Icartian Gneiss,,,2100,30,U-Pb zircon,Piton 1985
+North Armorican,Gondwana N. Amorica,49.5269,-1.8862,,La Hague,Icartian Gneiss,,,2200,30,U-Pb zircon,Piton 1985
+North Armorican,Gondwana N. Amorica,49.7206,-2.2128,Fort Tourgis,Alderney,Cadomian,Fort Tourgis Diorite,i,610,2,U-Pb zircon,D'Lemos et al. 2001
+North Armorican,Gondwana N. Amorica,49.7297,-2.1842,Bibette Head,Alderney,Cadomian,Bibette Head Granodiorite,i,572,1,U-Pb zircon,D'Lemos et al. 2001
+North Armorican,Gondwana N. Amorica,49.4455,-2.5327,Soldier's Bay,Guernsey,Icartian Gneiss,,,2018,15,U-Pb zircon,Vidal 1978
+North Armorican,Gondwana N. Amorica,49.4727,-2.6097,Cobo Beach,Guernsey,Cadomian,Cobo granite,i,570,1.5,Ar-Ar hornblende,Dallmeyer et al. 1992
+North Armorican,Gondwana N. Amorica,49.4727,-2.6097,Cobo Beach,Guernsey,Cadomian,Perelle Quartz Diorite,i,597,1,Ar-Ar hornblende,Dallmeyer et al. 1992
+North Armorican,Gondwana N. Amorica,49.1665,-2.0606,Le Nez,Jersey,Cadomian,appinite,i,563,1,Ar-Ar hornblende,D'Lemos et al. 1992
